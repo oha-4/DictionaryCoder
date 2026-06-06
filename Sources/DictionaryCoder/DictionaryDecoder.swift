@@ -146,7 +146,7 @@ open class DictionaryDecoder {
     // MARK: - Constructing a Dictionary Decoder
     
     /// Initializes `self` with default strategies.
-    init() {}
+    public init() {}
     
     // MARK: - Decoding Values
     

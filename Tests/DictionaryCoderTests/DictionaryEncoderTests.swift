@@ -18,7 +18,7 @@ final class DictionaryEncoderTests: XCTestCase {
         XCTAssertEqual(dictionary["int"] as! Int, Int(64))
         XCTAssertEqual(dictionary["int8"] as! Int, Int(8))
         XCTAssertEqual(dictionary["double"] as! Double, Double(0.5))
-        XCTAssertEqual(dictionary["float"] as! Double, Double(0.5))
+        XCTAssertEqual(dictionary["float"] as! Float, Float(0.5))
         XCTAssertEqual(dictionary["decimal"] as! Decimal, Decimal(0.1))
         XCTAssertEqual(dictionary["string"] as! String, "String")
         XCTAssertEqual(dictionary["array"] as! [String], ["String0", "String1"])

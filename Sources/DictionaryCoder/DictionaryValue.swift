@@ -10,6 +10,7 @@ import Foundation
 public protocol DictionaryValue {
     var bool: Bool? { get }
     var int: Int? { get }
+    var float: Float? { get }
     var double: Double? { get }
     var decimal: Decimal? { get }
     var string: String? { get }
@@ -21,6 +22,7 @@ public protocol DictionaryValue {
 extension DictionaryValue {
     public var bool: Bool? { nil }
     public var int: Int? { nil }
+    public var float: Float? { nil }
     public var double: Double? { nil }
     public var decimal: Decimal? { nil }
     public var string: String? { nil }
@@ -35,6 +37,12 @@ extension Bool: DictionaryValue {
 
 extension Int: DictionaryValue {
     public var int: Int? { self }
+}
+
+extension Float: DictionaryValue {
+    public var float: Float? { self }
+    // A `Float` is also a valid floating-point source when a `Double` is requested.
+    public var double: Double? { Double(self) }
 }
 
 extension Double: DictionaryValue {

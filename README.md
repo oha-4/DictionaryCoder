@@ -37,11 +37,22 @@ This protocol applies to
 
 - `Bool`
 - `Int`
+- `Float`
 - `Double`
 - `Decimal`
 - `String`
 - `Array` (`Element == DictionaryValue?`)
 - `Dictionary` (`Key == String, Value == DictionaryValue?`)
+
+## Notes & limitations
+
+- **Integers** are stored as `Int`. All fixed-width integer types (`Int8` … `UInt64`) are
+  accepted as long as the value fits in `Int`. A value outside that range (for example
+  `UInt64.max`) throws `EncodingError.invalidValue` rather than crashing.
+- **`Float`** is stored as `Float` (not widened to `Double`), so it round-trips with its own
+  precision. `Double` is stored as `Double`.
+- **Key strategies** match `JSONEncoder` / `JSONDecoder` exactly, including the well-known
+  asymmetry for acronyms: `lastURL` encodes to `last_url`, which decodes back to `lastUrl`.
 
 ## EncodingStrategy / DecodingStrategy
 

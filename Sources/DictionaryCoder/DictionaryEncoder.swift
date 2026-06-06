@@ -176,6 +176,19 @@ open class DictionaryEncoder {
 
 // MARK: - _DictionaryEncoder
 
+/// Converts a fixed-width integer to `Int` for storage in the dictionary,
+/// throwing instead of trapping when the value cannot be represented (for
+/// example `UInt64` values greater than `Int.max`).
+private func wrapInteger<N: FixedWidthInteger>(_ value: N, codingPath: [CodingKey]) throws -> Int {
+    guard let int = Int(exactly: value) else {
+        throw EncodingError.invalidValue(value, .init(
+            codingPath: codingPath,
+            debugDescription: "Integer <\(value)> does not fit in Int and cannot be represented in a dictionary."
+        ))
+    }
+    return int
+}
+
 private enum DictionaryFuture {
     case value(DictionaryValue?)
     case encoder(DictionaryEncoderImpl)
@@ -388,7 +401,15 @@ private protocol _SpecialTreatmentEncoder {
 
 extension _SpecialTreatmentEncoder {
     @inline(__always) fileprivate func wrapFloat<F: BinaryFloatingPoint>(_ float: F, for additionalKey: CodingKey?) throws -> DictionaryValue? {
-        Double(float)
+        // Preserve the concrete type so a `Float` round-trips as a `Float`
+        // rather than being widened to `Double`.
+        if let float = float as? Float {
+            return float
+        }
+        if let double = float as? Double {
+            return double
+        }
+        return Double(float)
     }
     
     fileprivate func wrapEncodable<E: Encodable>(_ encodable: E, for additionalKey: CodingKey?) throws -> DictionaryValue?? {
@@ -609,7 +630,7 @@ extension DictionaryKeyedEncodingContainer {
     }
 
     @inline(__always) private mutating func encodeFixedWidthInteger<N: FixedWidthInteger>(_ value: N, key: CodingKey) throws {
-        self.object.set(Int(value), for: key.stringValue)
+        self.object.set(try wrapInteger(value, codingPath: self.codingPath + [key]), for: key.stringValue)
     }
 }
 
@@ -730,7 +751,7 @@ private struct DictionaryUnkeyedEncodingContainer: UnkeyedEncodingContainer, _Sp
 
 extension DictionaryUnkeyedEncodingContainer {
     @inline(__always) private mutating func encodeFixedWidthInteger<N: FixedWidthInteger>(_ value: N) throws {
-        self.array.append(Int(value))
+        self.array.append(try wrapInteger(value, codingPath: self.codingPath + [DictionaryCodingKey(index: self.count)]))
     }
 
     @inline(__always) private mutating func encodeFloatingPoint<F: BinaryFloatingPoint>(_ float: F) throws {
@@ -829,7 +850,7 @@ private struct DictionarySingleValueEncodingContainer: SingleValueEncodingContai
 extension DictionarySingleValueEncodingContainer {
     @inline(__always) private mutating func encodeFixedWidthInteger<N: FixedWidthInteger>(_ value: N) throws {
         self.preconditionCanEncodeNewValue()
-        self.impl.singleValue = Int(value)
+        self.impl.singleValue = try wrapInteger(value, codingPath: self.codingPath)
     }
 
     @inline(__always) private mutating func encodeFloatingPoint<F: BinaryFloatingPoint>(_ float: F) throws {
