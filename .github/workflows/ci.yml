@@ -40,6 +40,7 @@ jobs:
       - name: Test with coverage
         run: swift test --enable-code-coverage
       - name: Export lcov
+        shell: bash
         run: |
           set -euo pipefail
           bin=$(swift build --show-bin-path)
