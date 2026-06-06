@@ -1,5 +1,8 @@
 # DictionaryCoder
 
+[![CI](https://github.com/oha-4/DictionaryCoder/actions/workflows/ci.yml/badge.svg)](https://github.com/oha-4/DictionaryCoder/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/oha-4/DictionaryCoder/graph/badge.svg)](https://codecov.io/gh/oha-4/DictionaryCoder)
+
 A Swift library to serialize `Codable` to and from `[String: DictionaryValue]`.
 
 ## Usage
