@@ -21,7 +21,7 @@ jobs:
     container:
       image: swift:${{ matrix.swift }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Swift version
         run: swift --version
       - name: Build
@@ -34,7 +34,7 @@ jobs:
     name: macOS (latest Xcode)
     runs-on: macos-14
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
