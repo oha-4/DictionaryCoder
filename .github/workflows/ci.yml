@@ -51,6 +51,8 @@ jobs:
             "$xctest" \
             -ignore-filename-regex='\.build|Tests' > coverage.lcov
           wc -l coverage.lcov
+      - name: Install Codecov uploader dependencies
+        run: apt-get update && apt-get install -y --no-install-recommends curl gnupg
       - uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6.0.1
         with:
           files: coverage.lcov
