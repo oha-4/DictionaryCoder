@@ -1,0 +1,18 @@
+# Codecov configuration
+# https://docs.codecov.com/docs/codecov-yaml
+coverage:
+  status:
+    # Keep checks informational at first so coverage never blocks a PR/merge.
+    project:
+      default:
+        informational: true
+    patch:
+      default:
+        informational: true
+
+comment:
+  layout: "reach, diff, files"
+  require_changes: true
+
+ignore:
+  - "Tests/**"

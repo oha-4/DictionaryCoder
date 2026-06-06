@@ -29,6 +29,33 @@ jobs:
       - name: Test
         run: swift test
 
+  # Generates code coverage and uploads it to Codecov.
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    container:
+      image: swift:6.0
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Test with coverage
+        run: swift test --enable-code-coverage
+      - name: Export lcov
+        run: |
+          set -euo pipefail
+          bin=$(swift build --show-bin-path)
+          xctest=$(find "$bin" -name '*.xctest' -print -quit)
+          llvm_cov=$(command -v llvm-cov || echo "$(dirname "$(readlink -f "$(command -v swift)")")/llvm-cov")
+          "$llvm_cov" export -format=lcov \
+            -instr-profile "$bin/codecov/default.profdata" \
+            "$xctest" \
+            -ignore-filename-regex='\.build|Tests' > coverage.lcov
+          wc -l coverage.lcov
+      - uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6.0.1
+        with:
+          files: coverage.lcov
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+
   # Builds/tests against the latest stable Xcode toolchain on macOS.
   macos:
     name: macOS (latest Xcode)
