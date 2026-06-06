@@ -1,0 +1,25 @@
+name: pinact
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Verify every action is pinned to a full commit SHA and that each pinned
+  # version is at least `min_age` days old (supply-chain protection).
+  verify:
+    name: Verify pinned actions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+      - uses: suzuki-shunsuke/pinact-action@896d595f299e71d65b9d28349d6956abe144390a # v3.0.0
+        with:
+          verify: "true"
+          verify_min_age: "true"
+          fix: "false"
+          config: .github/pinact.yml

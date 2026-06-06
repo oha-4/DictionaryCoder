@@ -1,0 +1,9 @@
+# pinact configuration
+# https://github.com/suzuki-shunsuke/pinact
+version: 3
+
+# Reject actions whose resolved version was published less than this many days
+# ago. Mitigates supply-chain attacks that move a tag to a malicious commit.
+# Enforced when running with --verify-min-age (set in the CI workflow).
+min_age:
+  value: 7
