@@ -29,6 +29,17 @@ jobs:
       - name: Test
         run: swift test
 
+  # Checks formatting with swift-format (rules in .swift-format).
+  lint:
+    name: Lint (swift-format)
+    runs-on: ubuntu-latest
+    container:
+      image: swift:6.3
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: swift-format lint
+        run: swift format lint --strict --recursive Sources Tests Package.swift
+
   # Generates code coverage and uploads it to Codecov.
   coverage:
     name: Coverage

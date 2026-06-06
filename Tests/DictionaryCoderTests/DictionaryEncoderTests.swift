@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import DictionaryCoder
 
 final class DictionaryEncoderTests: XCTestCase {
@@ -7,7 +8,7 @@ final class DictionaryEncoderTests: XCTestCase {
         let value: String? = nil
         XCTAssertNil(try encoder.encode(value))
     }
-    
+
     func testObject() throws {
         let encoder = DictionaryEncoder()
         encoder.dateEncodingStrategy = .iso8601

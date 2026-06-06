@@ -10,14 +10,14 @@ struct TestObject: Codable, Equatable {
     let string: String
     let array: [String]
     let object: TestObject2
-    
+
     let date: Date
     let data: Data
     let url: URL
-    
+
     let camelValue: String
     let optional: String?
-    
+
     static let example: Self = .init(
         bool: true,
         int: 64,

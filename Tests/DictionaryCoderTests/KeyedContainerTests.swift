@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import DictionaryCoder
 
 /// Synthesized `Codable` encodes nested values through the generic

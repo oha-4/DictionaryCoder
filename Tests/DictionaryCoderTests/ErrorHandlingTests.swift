@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import DictionaryCoder
 
 final class ErrorHandlingTests: XCTestCase {

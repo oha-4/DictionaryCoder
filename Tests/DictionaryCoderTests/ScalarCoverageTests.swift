@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import DictionaryCoder
 
 /// Exercises every per-type encode/decode overload of the single-value and
@@ -74,7 +75,10 @@ final class ScalarCoverageTests: XCTestCase {
     func testNestedArraysAndObjectArrays() throws {
         try assertRoundTrip([[1, 2], [3], []])
 
-        struct Point: Codable, Equatable { let x: Int; let y: Int }
+        struct Point: Codable, Equatable {
+            let x: Int
+            let y: Int
+        }
         try assertRoundTrip([Point(x: 1, y: 2), Point(x: 3, y: 4)])
         try assertRoundTrip([[Point(x: 1, y: 2)], [Point(x: 3, y: 4)]])
     }

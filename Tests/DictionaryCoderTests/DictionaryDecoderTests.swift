@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import DictionaryCoder
 
 final class DictionaryDecoderTests: XCTestCase {
@@ -9,7 +10,7 @@ final class DictionaryDecoderTests: XCTestCase {
         let date = try decoder.decode(Date.self, from: value)
         XCTAssertEqual(date.timeIntervalSince1970, 10)
     }
-    
+
     func testDateMilliSecondsSince1970() throws {
         let decoder = DictionaryDecoder()
         decoder.dateDecodingStrategy = .millisecondsSince1970
@@ -17,7 +18,7 @@ final class DictionaryDecoderTests: XCTestCase {
         let date = try decoder.decode(Date.self, from: value)
         XCTAssertEqual(date.timeIntervalSince1970, 10)
     }
-    
+
     func testObject() throws {
         let decoder = DictionaryDecoder()
         decoder.dateDecodingStrategy = .iso8601
@@ -36,7 +37,7 @@ final class DictionaryDecoderTests: XCTestCase {
             "date": "2001-05-30T00:00:00Z",
             "data": "abcdefg=",
             "url": "https://google.com",
-            "camel_value": "camel"
+            "camel_value": "camel",
         ]
         let object = try decoder.decode(TestObject.self, from: value)
         XCTAssertEqual(object, TestObject.example)

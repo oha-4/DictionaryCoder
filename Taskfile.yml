@@ -1,0 +1,63 @@
+# Task runner config — https://taskfile.dev
+# Run `task` to list available tasks.
+version: "3"
+
+vars:
+  # Paths handed to swift-format.
+  FORMAT_PATHS: Sources Tests Package.swift
+
+tasks:
+  default:
+    desc: List available tasks
+    cmds:
+      - task --list
+    silent: true
+
+  build:
+    desc: Build the package
+    cmds:
+      - swift build
+
+  test:
+    desc: Run the test suite
+    cmds:
+      - swift test
+
+  coverage:
+    desc: Run tests with coverage and print a line-coverage report (macOS)
+    cmds:
+      - swift test --enable-code-coverage
+      - |
+        bin=$(swift build --show-bin-path)
+        xctest=$(find "$bin" -name '*.xctest' -print -quit)
+        exe="$xctest/Contents/MacOS/$(basename "$xctest" .xctest)"
+        xcrun llvm-cov report "$exe" \
+          -instr-profile "$bin/codecov/default.profdata" \
+          Sources/DictionaryCoder/*.swift
+
+  format:
+    desc: Format sources in place with swift-format
+    cmds:
+      - swift format --in-place --recursive {{.FORMAT_PATHS}}
+
+  lint:
+    desc: Lint sources with swift-format (strict; fails on warnings)
+    cmds:
+      - swift format lint --strict --recursive {{.FORMAT_PATHS}}
+
+  pin:
+    desc: Pin GitHub Actions to commit SHAs
+    cmds:
+      - pinact run
+
+  pin:verify:
+    desc: Verify actions are SHA-pinned and meet the configured min age
+    cmds:
+      - pinact run --verify --verify-min-age
+
+  ci:
+    desc: Run the checks CI runs (lint, build, test)
+    cmds:
+      - task: lint
+      - task: build
+      - task: test

@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import DictionaryCoder
 
 /// `Array.encode(to:)` funnels through the generic `encode<T>` overload, so the
@@ -65,10 +66,24 @@ private struct UnkeyedScalars: Codable, Equatable {
         uint64 = try c.decode(UInt64.self)
     }
 
-    init(bool: Bool, string: String, double: Double, float: Float, int: Int, int8: Int8, int16: Int16, int32: Int32, int64: Int64, uint: UInt, uint8: UInt8, uint16: UInt16, uint32: UInt32, uint64: UInt64) {
-        self.bool = bool; self.string = string; self.double = double; self.float = float
-        self.int = int; self.int8 = int8; self.int16 = int16; self.int32 = int32; self.int64 = int64
-        self.uint = uint; self.uint8 = uint8; self.uint16 = uint16; self.uint32 = uint32; self.uint64 = uint64
+    init(
+        bool: Bool, string: String, double: Double, float: Float, int: Int, int8: Int8, int16: Int16, int32: Int32,
+        int64: Int64, uint: UInt, uint8: UInt8, uint16: UInt16, uint32: UInt32, uint64: UInt64
+    ) {
+        self.bool = bool
+        self.string = string
+        self.double = double
+        self.float = float
+        self.int = int
+        self.int8 = int8
+        self.int16 = int16
+        self.int32 = int32
+        self.int64 = int64
+        self.uint = uint
+        self.uint8 = uint8
+        self.uint16 = uint16
+        self.uint32 = uint32
+        self.uint64 = uint64
     }
 }
 

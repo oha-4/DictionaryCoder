@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import DictionaryCoder
 
 /// Encodes `value` to a dictionary and decodes it back, asserting the result is equal.
@@ -27,7 +28,7 @@ struct AllIntegers: Codable, Equatable {
     let u64: UInt64
 
     static let example = AllIntegers(
-        i: -1, i8: .min, i16: .max, i32: -100, i64: 1234567890,
+        i: -1, i8: .min, i16: .max, i32: -100, i64: 1_234_567_890,
         u: 1, u8: .max, u16: .max, u32: .max, u64: 9_000_000_000
     )
 }

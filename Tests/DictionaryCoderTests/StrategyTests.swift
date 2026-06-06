@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import DictionaryCoder
 
 final class StrategyTests: XCTestCase {
@@ -7,7 +8,10 @@ final class StrategyTests: XCTestCase {
 
     private struct DateBox: Codable, Equatable { let date: Date }
     private struct DataBox: Codable, Equatable { let data: Data }
-    private struct CamelBox: Codable, Equatable { let firstName: String; let lastName: String }
+    private struct CamelBox: Codable, Equatable {
+        let firstName: String
+        let lastName: String
+    }
 
     // MARK: Date strategies
 
@@ -131,6 +135,7 @@ final class StrategyTests: XCTestCase {
         XCTAssertNotNil(encoded["_leading"])
 
         // convertFromSnakeCase with leading and trailing underscores.
+        // swift-format-ignore: AlwaysUseLowerCamelCase
         struct Wrapped: Codable, Equatable { let _myValue_: Int }
         let decoder = DictionaryDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase

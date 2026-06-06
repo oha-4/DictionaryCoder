@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import DictionaryCoder
 
 final class RoundTripTests: XCTestCase {
@@ -48,7 +49,9 @@ final class RoundTripTests: XCTestCase {
     // MARK: Type fidelity
 
     func testFloatIsStoredAsFloat() throws {
-        let dict = try DictionaryEncoder().encode(Scalars(bool: false, float: 0.1, double: 0.2, string: "")) as! [String: DictionaryValue?]
+        let dict =
+            try DictionaryEncoder().encode(Scalars(bool: false, float: 0.1, double: 0.2, string: ""))
+            as! [String: DictionaryValue?]
         XCTAssertEqual(dict["float"] as? Float, Float(0.1))
         XCTAssertEqual(dict["double"] as? Double, Double(0.2))
         // A Float must not be silently widened to Double in the dictionary.

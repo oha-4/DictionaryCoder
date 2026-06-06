@@ -1,6 +1,6 @@
 //
 //  DictionaryValue.swift
-//  
+//
 //
 //  Created by sheat on 2023/01/17.
 //
@@ -62,5 +62,5 @@ extension Array: DictionaryValue where Element == DictionaryValue? {
 }
 
 extension Dictionary: DictionaryValue where Key == String, Value == DictionaryValue? {
-    public var object: [String : DictionaryValue?]? { self }
+    public var object: [String: DictionaryValue?]? { self }
 }
