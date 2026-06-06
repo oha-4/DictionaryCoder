@@ -1,9 +1,16 @@
 name: pinact
 
 on:
+  # Only relevant when action references or the pinact config change.
   push:
     branches: [main]
+    paths:
+      - .github/workflows/**
+      - .github/pinact.yml
   pull_request:
+    paths:
+      - .github/workflows/**
+      - .github/pinact.yml
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
