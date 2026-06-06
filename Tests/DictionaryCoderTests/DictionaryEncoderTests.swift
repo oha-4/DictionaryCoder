@@ -23,7 +23,7 @@ final class DictionaryEncoderTests: XCTestCase {
         XCTAssertEqual(dictionary["string"] as! String, "String")
         XCTAssertEqual(dictionary["array"] as! [String], ["String0", "String1"])
         XCTAssertEqual((dictionary["object"] as! [String: DictionaryValue?])["value"] as! String, "String")
-        XCTAssertEqual(dictionary["date"] as! String, "2001-05-29T15:00:00Z")
+        XCTAssertEqual(dictionary["date"] as! String, "2001-05-30T00:00:00Z")
         XCTAssertEqual(dictionary["data"] as! String, "abcdefg=")
         XCTAssertEqual(dictionary["url"] as! String, "https://google.com")
         XCTAssertEqual(dictionary["camel_value"] as! String, "camel")

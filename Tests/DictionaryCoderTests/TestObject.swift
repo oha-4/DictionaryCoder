@@ -28,7 +28,11 @@ struct TestObject: Codable, Equatable {
         string: "String",
         array: ["String0", "String1"],
         object: .init(value: "String"),
-        date: Calendar(identifier: .gregorian).date(from: DateComponents(year: 2001, month: 5, day: 30))!,
+        date: {
+            var calendar = Calendar(identifier: .gregorian)
+            calendar.timeZone = TimeZone(identifier: "UTC")!
+            return calendar.date(from: DateComponents(year: 2001, month: 5, day: 30))!
+        }(),
         data: Data(base64Encoded: "abcdefg=")!,
         url: URL(string: "https://google.com")!,
         camelValue: "camel",

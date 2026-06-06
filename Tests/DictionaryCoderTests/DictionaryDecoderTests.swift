@@ -33,7 +33,7 @@ final class DictionaryDecoderTests: XCTestCase {
             "string": "String",
             "array": ["String0", "String1"],
             "object": ["value": "String"],
-            "date": "2001-05-30T00:00:00+09:00",
+            "date": "2001-05-30T00:00:00Z",
             "data": "abcdefg=",
             "url": "https://google.com",
             "camel_value": "camel"
