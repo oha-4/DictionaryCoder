@@ -732,16 +732,16 @@ extension DictionaryDecoderImpl {
             guard let bool = value?.bool else {
                 throw self.impl.createError(type: type, for: DictionaryCodingKey(index: currentIndex), value: value)
             }
-            
+            self.currentIndex += 1
             return bool
         }
-        
+
         mutating func decode(_ type: String.Type) throws -> String {
             let value = try getNextValue(ofType: type)
             guard let string = value?.string else {
                 throw self.impl.createError(type: type, for: DictionaryCodingKey(index: currentIndex), value: value)
             }
-            
+            self.currentIndex += 1
             return string
         }
         

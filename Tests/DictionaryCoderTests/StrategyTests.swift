@@ -78,6 +78,28 @@ final class StrategyTests: XCTestCase {
         try assertRoundTrip(DataBox(data: Data([10, 20, 30])), encoder: encoder, decoder: decoder)
     }
 
+    func testDataCustom() throws {
+        // Encode/decode Data as a hex string via custom closures.
+        let encoder = DictionaryEncoder()
+        encoder.dataEncodingStrategy = .custom { data, enc in
+            var container = enc.singleValueContainer()
+            try container.encode(data.map { String(format: "%02x", $0) }.joined())
+        }
+        let decoder = DictionaryDecoder()
+        decoder.dataDecodingStrategy = .custom { dec in
+            let hex = try dec.singleValueContainer().decode(String.self)
+            var bytes = [UInt8]()
+            var index = hex.startIndex
+            while index < hex.endIndex {
+                let next = hex.index(index, offsetBy: 2)
+                bytes.append(UInt8(hex[index..<next], radix: 16)!)
+                index = next
+            }
+            return Data(bytes)
+        }
+        try assertRoundTrip(DataBox(data: Data([0xDE, 0xAD, 0xBE, 0xEF])), encoder: encoder, decoder: decoder)
+    }
+
     // MARK: Key strategies
 
     func testSnakeCaseRoundTrip() throws {
@@ -93,6 +115,27 @@ final class StrategyTests: XCTestCase {
 
         let decoded = try decoder.decode(CamelBox.self, from: encoded)
         XCTAssertEqual(decoded, value)
+    }
+
+    func testSnakeCaseAcronymAndUnderscores() throws {
+        // Exercises the multi-uppercase ("URL") and leading/trailing underscore
+        // branches of the snake_case conversion.
+        struct Keys: Codable, Equatable {
+            let someURLValue: Int
+            let _leading: Int
+        }
+        let encoder = DictionaryEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
+        let encoded = try encoder.encode(Keys(someURLValue: 1, _leading: 2)) as! [String: DictionaryValue?]
+        XCTAssertNotNil(encoded["some_url_value"])
+        XCTAssertNotNil(encoded["_leading"])
+
+        // convertFromSnakeCase with leading and trailing underscores.
+        struct Wrapped: Codable, Equatable { let _myValue_: Int }
+        let decoder = DictionaryDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let decoded = try decoder.decode(Wrapped.self, from: ["_my_value_": 7])
+        XCTAssertEqual(decoded._myValue_, 7)
     }
 
     func testCustomKeyStrategy() throws {

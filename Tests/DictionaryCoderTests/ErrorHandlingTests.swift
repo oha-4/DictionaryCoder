@@ -80,4 +80,52 @@ final class ErrorHandlingTests: XCTestCase {
             }
         }
     }
+
+    func testInvalidISO8601Date() throws {
+        let decoder = DictionaryDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        XCTAssertThrowsError(try decoder.decode(Date.self, from: "not a date")) { error in
+            guard case DecodingError.dataCorrupted = error else {
+                return XCTFail("Expected dataCorrupted, got \(error)")
+            }
+        }
+    }
+
+    func testInvalidBase64Data() throws {
+        let decoder = DictionaryDecoder()
+        decoder.dataDecodingStrategy = .base64
+        XCTAssertThrowsError(try decoder.decode(Data.self, from: "%%% not base64 %%%")) { error in
+            guard case DecodingError.dataCorrupted = error else {
+                return XCTFail("Expected dataCorrupted, got \(error)")
+            }
+        }
+    }
+
+    func testUnkeyedContainerPastEnd() throws {
+        // The dictionary has fewer elements than the type tries to decode.
+        XCTAssertThrowsError(try decoder.decode([Int].self, from: ["x"])) { error in
+            // Element 0 is a String, not an Int.
+            guard case DecodingError.typeMismatch = error else {
+                return XCTFail("Expected typeMismatch, got \(error)")
+            }
+        }
+        XCTAssertThrowsError(try decoder.decode(NonEmptyPair.self, from: [1])) { error in
+            guard case DecodingError.valueNotFound = error else {
+                return XCTFail("Expected valueNotFound, got \(error)")
+            }
+        }
+    }
+}
+
+/// Decodes two elements from an unkeyed container; used to trigger the
+/// "container is at end" path when fewer elements are present.
+private struct NonEmptyPair: Codable, Equatable {
+    let a: Int
+    let b: Int
+
+    init(from decoder: Decoder) throws {
+        var c = try decoder.unkeyedContainer()
+        a = try c.decode(Int.self)
+        b = try c.decode(Int.self)
+    }
 }
