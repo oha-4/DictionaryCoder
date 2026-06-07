@@ -1,0 +1,18 @@
+version: 2
+updates:
+  # Keep GitHub Actions up to date. Actions are pinned to full commit SHAs
+  # (enforced by pinact); Dependabot updates both the SHA and its version
+  # comment when a new release is available.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci
+
+  # No external SwiftPM dependencies today, but kept so any future
+  # Package.swift dependency is watched automatically.
+  - package-ecosystem: swift
+    directory: /
+    schedule:
+      interval: weekly
