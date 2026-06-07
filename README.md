@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/oha-4/DictionaryCoder/actions/workflows/ci.yml/badge.svg)](https://github.com/oha-4/DictionaryCoder/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/oha-4/DictionaryCoder/graph/badge.svg)](https://codecov.io/gh/oha-4/DictionaryCoder)
+[![Swift](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Foha-4%2FDictionaryCoder%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/oha-4/DictionaryCoder)
+[![Platforms](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Foha-4%2FDictionaryCoder%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/oha-4/DictionaryCoder)
 
 A Swift library to serialize `Codable` to and from `[String: DictionaryValue]`.
 
