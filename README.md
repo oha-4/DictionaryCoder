@@ -49,6 +49,28 @@ This protocol applies to
 - `Array` (`Element == DictionaryValue?`)
 - `Dictionary` (`Key == String, Value == DictionaryValue?`)
 
+### Switching on a value
+
+Each accessor (`bool`, `int`, …) is optional, so inspecting an untyped `DictionaryValue` with
+`if let` chains is verbose and not exhaustive. Use `kind` to get a `DictionaryValueKind` enum you
+can `switch` over safely:
+
+```swift
+switch value.kind {
+case .int(let n):      print("int \(n)")
+case .string(let s):   print("string \(s)")
+case .array(let xs):   print("array of \(xs.count)")
+case .object(let o):   print("object with keys \(o.keys)")
+case .bool, .float, .double, .decimal:
+    break
+case nil:
+    break // the value did not expose any known kind
+}
+```
+
+Each conforming type reports its own case, so `Float` (which also exposes `double`) always maps to
+`.float`.
+
 ## Notes & limitations
 
 - **Integers** are stored as `Int`. All fixed-width integer types (`Int8` … `UInt64`) are
